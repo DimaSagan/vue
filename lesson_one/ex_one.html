@@ -4,8 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-    <h1>Задача один</h1>
+    <h1>Задача 1</h1>
+    <p>Вводиться кількість пасажирів. Вивести:</p>
+    <ul>
+        <li>скільки потрібно автобусів (кожен автобус на 20 місць)</li> 
+        <li>скільки пляшок води (кожному пасажиру 2 пляшки)</li>
+        <li>скільки бутербродів (кожному пасажиру 3 бутерброди)</li>
+    </ul>
+    <div id="app">
+        <label>
+            Кількість пасажирів:
+            <input type="number" v-model.number="passengersNumber">
+        </label>
+        <div>Кількість автобусів: {{busesNumber}}</div>
+        <div>Кількість води: {{watersNumber}}</div>
+        <div>Кількість бутербродів: {{sandwichesNumber}}</div>
+    </div>
+
+<script>
+  const { createApp } = Vue
+  const busNumber = 20
+  const waterNumber = 2
+  const sandwichNumber = 3
+  createApp({
+    
+    data() {
+      return {
+        passengersNumber:0
+      }
+    },
+    computed:{
+        busesNumber(){
+            return Math.ceil(this.passengersNumber / busNumber)
+        },
+        watersNumber(){
+            return this.passengersNumber * waterNumber
+        },
+        sandwichesNumber(){
+            return this.passengersNumber * sandwichNumber
+        }
+    }
+  }).mount('#app')
+</script>
 </body>
 </html>
