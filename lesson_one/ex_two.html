@@ -26,12 +26,7 @@
 
     <script>
         const { createApp } = Vue
-
-        createApp({
-            data() {
-                return {
-                    monthNumber: 1,
-                    seasons: [
+        let seasons= [
                         {
                             season: 'winter',
                             img: 'img/winter.png',
@@ -53,11 +48,16 @@
                             message: 'Не забудь парасольку'
                         },
                     ]
+        createApp({
+            data() {
+                return {
+                    monthNumber: 1,
+                    
                 }
             },
             methods: {
                 season() {
-                    switch (monthNumber) {
+                    switch (this.monthNumber) {
                         case 1:
                         case 2:
                         case 12:
