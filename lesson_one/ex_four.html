@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<style>
+    article{
+        max-width: 500px;
+        padding: 50px;
+        border: 2px solid rgba(0, 0, 0, 0.395);
+        border-radius: 15px;
+    }
+    article section{
+        margin-bottom: 20px;
+    }
+    .input{
+        display: flex;
+        justify-content: space-between;
+    }
+    input{
+        margin-right: 5px;
+    }
+    button{
+        width: 100px;
+    }
+</style>
+<body>
+    <h2>Задача 4. “Рахунок у банку”</h2>
+    <ol>
+        <h3>Вимоги:</h3>
+        <li>Спочатку сума дорівнює 0грн. Змінити суму у гривнях можна або зарахуванням на рахунок, або зняттям</li>
+        <li>Сума автоматично переводиться у долари та євро (фіксований курс задається у data).</li>
+        <li>Можливість зарахувати суму (контролювати, щоб не була від’ємною)</li>
+        <li>Можливість зняти (щоб не можна зняти більше ніж є на рахунку)</li>
+        <li>При виконанні зняття і зарахування коштів вираховувати 3% від суми (відображати кількість відсотків автоматично)</li>
+    </ol>
+    <ul>
+        <h3>При зміні суми :</h3>
+        <li>Якщо було зняття, то суму відоражати червоним</li>
+        <li>Якщо було зарахування, то суму відображати зеленим</li>
+        <li>Якщо сума валюти менша за 100 то відображати червоним кольором, інакше - зеленим</li>
+    </ul>
+    <div id="app" style="font-size: 20px;">
+
+        <article>
+            <div style="font-size: 30px; margin-bottom: 20px;">
+                Сума на рахунку: <span :style="{color:balanceColor, transition:'color 1s ease'}">{{calcBalance}}</span>
+            </div>
+            <section class="input">
+                <label>
+                    Зарахувати на рахунок
+                </label>
+                <div>
+                    <input type="number" v-model.number="deposite" @click="clearDeposite(), clearWithdrawal()">
+                    <button @click="getDeposite">Deposite</button>
+                </div>
+            </section>
+            <section class="input">
+                <label>
+                    Зняти з рахунку
+                </label>
+                <div>
+                    <input type="number" v-model.number="withdrawal" @click="clearWithdrawal(), clearDeposite()">
+                    <button @click="getWithdrawal()">Withdrawal</button>
+                </div>
+            </section>
+            <div>Відсотки за обслуговування: {{calcFee}}</div>
+            <hr>
+            <section>
+                <h3>Сума у доларах : {{dollars}}</h3>
+            </section>
+            <section>
+                <h3>Сума у євро : {{euro}}</h3>
+            </section>
+            
+        </article>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        const fee = 0.03
+        createApp({
+
+            data() {
+                return {
+                    accountBalance: 0,
+                    deposite: null,
+                    withdrawal: null,
+                    serviceFee: null,
+                    dollarsVal: 42.7,
+                    euroVal: 44.3,
+                    switchColor: ''
+                }
+            },
+            methods: {
+                getDeposite() {
+                    this.accountBalance += this.deposite - this.getFee(this.deposite)
+                    this.clearDeposite()
+                    this.getChangeColor('green')
+                },
+                getWithdrawal() {
+                    if (this.accountBalance < this.withdrawal || this.withdrawal < 0) {
+                        window.alert('Wrong Operation')
+                        this.clearWithdrawal()
+                    } else {
+                        this.accountBalance -= this.withdrawal
+                        this.clearWithdrawal()
+                        this.getChangeColor('red')
+                    }
+                },
+                getFee(value) {
+                    if (value) {
+                        return value * fee
+                    } else {
+                        return 0
+                    }
+                },
+                getChangeColor(color){
+                    this.switchColor = color
+                    setTimeout(()=>{
+                        this.switchColor = ''
+                    },1000)
+                },
+                clearDeposite() {
+                    this.deposite = null
+                },
+                clearWithdrawal() {
+                    this.withdrawal = null
+                }
+            },
+            computed: {
+                calcBalance() {
+                    return this.accountBalance.toFixed(2)
+                },
+                calcFee() {
+                    return this.deposite
+                        ? (this.deposite * fee).toFixed(2)
+                        : this.withdrawal
+                        ? (this.withdrawal * fee).toFixed(2)
+                        : '0.00'
+                },
+                dollars() {
+                    return (this.accountBalance / this.dollarsVal).toFixed(2)
+                },
+                euro() {
+                    return (this.accountBalance / this.euroVal).toFixed(2)
+                },
+                balanceColor(){
+                    if(this.switchColor!=''){
+                        return this.switchColor
+                    }else{
+                         return this.accountBalance>=100? 'green' : 'red'
+                    }
+                        
+                    
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

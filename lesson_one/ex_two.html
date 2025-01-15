@@ -18,58 +18,69 @@
             <input type="number" v-model.lazy="monthNumber">
         </label>
         <div>
-            <p>Season : {{season?.season}}</p>
-            <p>{{season?.message}}</p>
+            <p>Season : {{season().season}}</p>
+            <p>{{season().message}}</p>
         </div>
-        <img :src="season?.img" alt="">
+        <img :src="season().img" alt="">
     </div>
 
     <script>
         const { createApp } = Vue
-        const seasons = [
-            {
-                season: 'winter',
-                img: 'img/winter.png',
-                message: 'Одягни шапку'
-            },
-            {
-                season: 'spring',
-                img: 'img/spring.png',
-                message: 'Не забувай про галощі'
-            },
-            {
-                season: 'summer',
-                img: 'img/summer.jpg',
-                message: 'Самий час полежита на ліжаку'
-            },
-            {
-                season: 'autumn',
-                img: 'img/autumn.png',
-                message: 'Не забудь парасольку'
-            },
-        ]
+
         createApp({
             data() {
                 return {
-                    monthNumber: 0,
-
+                    monthNumber: 1,
+                    seasons: [
+                        {
+                            season: 'winter',
+                            img: 'img/winter.png',
+                            message: 'Одягни шапку'
+                        },
+                        {
+                            season: 'spring',
+                            img: 'img/spring.png',
+                            message: 'Не забувай про галощі'
+                        },
+                        {
+                            season: 'summer',
+                            img: 'img/summer.jpg',
+                            message: 'Самий час полежита на ліжаку'
+                        },
+                        {
+                            season: 'autumn',
+                            img: 'img/autumn.png',
+                            message: 'Не забудь парасольку'
+                        },
+                    ]
                 }
             },
-            computed: {
+            methods: {
                 season() {
-                    switch (true) {
-                        case [1, 2, 12].includes(this.monthNumber):
+                    switch (monthNumber) {
+                        case 1:
+                        case 2:
+                        case 12:
                             return seasons[0]
-                        case [3, 4, 5].includes(this.monthNumber):
+                        case 3:
+                        case 4:
+                        case 5:
                             return seasons[1]
-                        case [6, 7, 8].includes(this.monthNumber):
+                        case 6:
+                        case 7:
+                        case 8:
                             return seasons[2]
-                        case [9, 10, 11].includes(this.monthNumber):
+                        case 9:
+                        case 10:
+                        case 11:
                             return seasons[3]
                         default:
                             return null;
                     }
                 }
+            },
+            computed:{
+                
             }
         }).mount('#app')
     </script>

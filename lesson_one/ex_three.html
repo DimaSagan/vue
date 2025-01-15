@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <h2>
+        Задача 3
+    </h2>
+    <p>
+        Задано початок та кінець діапазону. При натисканні на кнопку випадковим чином генерувати значення з вказаного діапазону та відображати його.
+    </p>
+    <div id="app">
+        <label>
+            min
+            <input type="number" v-model.number="minNumber">
+        </label>
+        <label>
+            max
+            <input type="number" v-model.number="maxNumber">
+        </label>
+        <button @click="getRandom()">start</button>
+        <div>{{result}}</div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    minNumber: 0,
+                    maxNumber: 0,
+                    result: 'your result'
+                }
+            },
+            methods: {
+                getRandom() {
+                    this.result = this.minNumber + Math.floor(Math.random() * (this.maxNumber - this.minNumber + 1))
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
