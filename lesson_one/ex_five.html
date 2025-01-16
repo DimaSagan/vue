@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <h2>Задача 5</h2>
+    <p>
+        Додаток містить масив об’єктів (логін, пароль) -- інсуючі логіни і паролі. Користувач вводить логін і пароль, а програма повідомляє чи може
+        користувач бути авторизованим (чи є він одним з масиву).
+    </p>
+    <div id="app">
+        <label>
+            Login
+            <input type="text" v-model="userLogin">
+        </label>
+        <label>
+            Password
+            <input :type="passwordType" v-model="userPassword">
+            <button @click="togglePassword()">{{buttonStatus}}</button>
+        </label>
+        <div>{{loginStatus}}</div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        const users = [
+            {
+                name: 'user One',
+                pass: '123'
+            },
+            {
+                name: 'Dima Sagan',
+                pass: 'golova'
+            }
+        ]
+        createApp({
+            data() {
+                return {
+                    userLogin: '',
+                    userPassword: '',
+                    showPassword: false
+                }
+            },
+            methods:{
+                togglePassword(){
+                    this.showPassword = !this.showPassword
+                }
+            },
+            computed:{
+                passwordType(){
+                    return this.showPassword ? 'text' : 'password'
+                }, 
+                buttonStatus(){
+                    return this.showPassword ? 'hide' : 'show'
+                },
+                loginStatus(){
+                    const user = users.find(u=> u.name.trim().toLowerCase() === this.userLogin.trim().toLowerCase() && u.pass === this.userPassword)
+                    return user ? 'you can login' : 'user not found'
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
