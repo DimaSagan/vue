@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задача 6</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <!-- <h2>Задача 6</h2>
+    <p>
+        Задача. На кухню поступають замовлення. Спочатку ми додаємо їх у список “Очікують на виконання”, якщо повар береться робити — замовлення
+        переходить у список “Виконуються”, якщо замовлення виконано — переходить у список “Готові до виносу”. Якщо натиснути на “Подано” - страва
+        зникає з таблиці
+    </p> -->
+
+<div id="app">
+    <h1>Обробка замовлень</h1>
+    <button class="add-order" @click="toggleGenerator">Додати замовлення</button>
+    <article class="orders">
+        
+        <section class="orders__pending">
+            <h2>Очікують на виконання</h2>
+            <template v-for="(item, i) in pending" :key="item.orederNumber">
+                <div class="order" @click="addToPreparing(i)">
+                    <p>Номер замовлення: {{item.orederNumber}}</p>
+                    <p>Номер стола: {{item.table}}</p>
+                    <p>Страва: {{item.dish}} - {{item.dishQuatity}}шт.</p>
+                </div>
+            </template>
+        </section>
+        <section class="orders__preparing">
+            <h2>Виконуються</h2>
+            <template v-for="(item, i) in preparing" :key="item.orederNumber">
+                <div class="order" @click="addToReady(i)">
+                    <p>Номер замовлення: {{item.orederNumber}}</p>
+                    <p>Номер стола: {{item.table}}</p>
+                    <p>Страва: {{item.dish}} - {{item.dishQuatity}}шт.</p>
+                </div>
+            </template>
+        </section>
+        <section class="orders__ready">
+            <h2>Готові до виносу</h2>
+            <template v-for="(item, i) in ready" :key="item.orederNumber">
+                <div class="order" @click="completed(i)">
+                    <p>Номер замовлення: {{item.orederNumber}}</p>
+                    <p>Номер стола: {{item.table}}</p>
+                    <p>Страва: {{item.dish}} - {{item.dishQuatity}}шт.</p>
+                </div>
+            </template>
+        </section>
+    </article>
+    <article class="oreder-generator" v-show="orederGenerator">
+        <div class="generator">
+            <label>
+                Стіл: 
+                <input type="number" v-model="table">
+            </label>
+            <label>
+                Страва: 
+                <input type="text" v-model="dish">
+            </label>
+            <label>
+                Кількість: 
+                <input type="number" v-model="dishQuatity">
+            </label>
+            <button class="generator__submit" @click="addOrder">Відправити</button>
+            <button class="generator__close" @click="toggleGenerator">+</button>
+        </div>
+    </article>
+</div>
+
+<script>
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        dish: null,
+        dishQuatity: null,
+        table: null,
+        orederNumber: 0,
+        pending:[],
+        preparing:[],
+        ready:[],
+        orederGenerator: false
+      }
+    },
+    methods:{
+        addOrder(){
+            this.pending.push(
+                {
+                    dish: this.dish,
+                    dishQuatity: this.dishQuatity,
+                    table: this.table,
+                    orederNumber : this.orederNumber += 1
+                }
+            )
+            this.toggleGenerator()
+            this.clear()
+        },
+        addToPreparing(i){
+            this.preparing.push(this.pending[i])
+            this.pending.splice(i, 1)
+        },
+        addToReady(i){
+            this.ready.push(this.preparing[i])
+            this.preparing.splice(i, 1)
+        },
+        clear(){
+            this.dish= null
+            this.dishQuatity= null
+            this.table= null
+        },
+        completed(i){
+            this.ready.splice(i, 1)
+        },
+        toggleGenerator(){
+            this.orederGenerator = !this.orederGenerator
+        }
+    }
+  }).mount('#app')
+</script>
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задача 2</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<style>
+    .econom,
+    .buisnes{
+        height: 700px;
+        padding: 10px;
+        position: relative;
+    }
+    .econom::before,
+    .buisnes::before{
+        content:'';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: .25;
+        margin: -10px;
+    }
+    .econom::before{
+        background: url(https://www.biletik.aero/upload/medialibrary/266/26658b0c9783a31312920db04a2da65c.jpg) no-repeat;
+        
+    }
+    .buisnes::before{
+        background: url(https://azertag.az/files/2019/2/1200x630/15631260531049064580_1200x630.jpg) no-repeat;
+    }
+</style>
+<body>
+    <h2>Задача 2.</h2>
+    <p>З випадаючого списку вибираємо клас квитка у літаку. Якщо: </p>
+    <ol>
+        <li>
+            бізнес - виводимо елементи для вибору газети та коньяку (якщо вибрано коньяк, то запропонувати закуску (так/ні)), на фоні зображення
+            бізнес
+            кают
+        </li>
+        <li>
+            економ – виводимо елементи для вибору типу пива і чипсів, на фоні хмарки.
+        </li>
+    </ol>
+
+    <div id="app">
+        <article :class="backGround">
+            <h2>Покупка білета</h2>
+            <select v-model="ticketClass">
+                <option disabled value="">Оберіть клас</option>
+                <option>Економ</option>
+                <option>Бізнес</option>
+            </select>
+            <article v-if="ticketClass=='Економ'">
+
+                <section>
+                    <h3>Оберіть тип пива:</h3>
+                    <label for="lager">
+                        Світле
+                        <input type="radio" name="drink" id="lager">
+                    </label>
+                    <label for="dark">
+                        Темне
+                        <input type="radio" name="drink" id="dark">
+                    </label>
+                </section>
+
+                <section>
+                    <h3>Оберіть тип чипсів:</h3>
+                    <label for="cheese">
+                        Сир
+                        <input type="radio" name="chips" id="cheese">
+                    </label>
+                    <label for="bacone">
+                        Бекон
+                        <input type="radio" name="chips" id="bacone">
+                    </label>
+                </section>
+            </article>
+
+            <article v-if="ticketClass=='Бізнес'">
+                <section>
+                    <h3>Газета</h3>
+                    <label for="newspaperYes">
+                        Так
+                        <input type="radio" name="newspaper" id="newspaperYes">
+                    </label>
+                    <label for="newspaperNo">
+                        Ні
+                        <input type="radio" name="newspaper" id="newspaperNo">
+                    </label>
+                </section>
+
+                <section>
+                    <h3>Коньяк</h3>
+                    <label for="cognac">
+                        Чи бажаєте ви пити коньяк?
+                        <input type="checkbox" name="cognac" id="cognac" v-model="cognac">
+                    </label>
+                </section>
+
+                <section v-if="cognac==true">
+                    <h3>Закуски</h3>
+                    <label for="fruits">
+                        Так
+                        <input type="radio" name="snack" id="fruits">
+                    </label>
+                    <label for="cheese-cognac">
+                        Ні
+                        <input type="radio" name="snack" id="cheese-cognac">
+                    </label>
+                </section>
+            </article>
+        </article>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        createApp({
+            data() {
+                return {
+                    ticketClass: "",
+                    cognac:""
+                }
+            },
+            computed:{
+                backGround(){
+                    return this.ticketClass == 'Бізнес' ? "buisnes" : this.ticketClass == 'Економ' ? "econom ": ''
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
+

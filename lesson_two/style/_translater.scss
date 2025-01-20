@@ -1,0 +1,51 @@
+.card {
+    max-width: 400px;
+    padding: 20px;
+    background-color: #eeecec;
+
+    // .card__img
+
+    &__img {
+        img{
+            width: 100%;
+            height: 100%;
+        }
+        margin-bottom: 20px;
+    }
+
+    // .card__information
+    &__button{
+        text-align: center;
+    }
+   button{
+    background-color: gray;
+    padding: 10px 20px;
+    color: white;
+   }
+}
+.information {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+    // .information__title
+
+    &__title,span {
+        text-align: center;
+        text-transform: uppercase;
+    }
+    input{
+        border: 1px solid gray;
+        text-align: center;
+    }
+}
+
+.default{
+    border:  12px solid transparent;
+}
+.green-border{
+    border:  12px solid green;
+}
+.red-border{
+    border:  12px solid red;
+}

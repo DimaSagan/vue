@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <h2>Задача 1</h2>
+    <p>Вводимо логіна і пароль. Якщо логін вірний відображаємо смайл. Якщо ні, то: <br>
+        1) якщо логін = Іван – колір повідомлення про помилку синій<br>
+        2) якщо хтось інший, то колір повідомлення червоний<br>
+    </p>
+
+    <div id="app">
+        <article class="wrapper-login" v-if="!userStatus">
+            <div class="login">
+                <h2>login</h2>
+                <div class="login__inputs">
+                    <input type="text" v-model.lazy="userName">
+                    <div class="login__password">
+                        <input :type="passwordType" v-model.lazy="userPassword">
+                        <button @click="swichPassword">
+                            <svg class="icon">
+                                <use :xlink:href="passwordIcon"></use>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="login__submit" @click="checkUser">Login</button>
+                </div>
+                <div class="login__error" :class="ivan" style="height: 16px;">
+                    <p v-if="userStatus==false">Smething went wrong</p>
+                </div>
+            </div>
+        </article>
+        <article v-show="userStatus==true">
+            <img src="https://cs6.livemaster.ru/storage/51/8d/e9304e78c01418b5ea956d3be36a.jpg" alt="">
+        </article>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        const users = [
+            {
+                name: "user one",
+                pass: "123"
+            },
+            {
+                name: "ivan",
+                pass: "1232"
+            }
+        ]
+        const showPassword = "img/sprite.svg#show"
+        const hidePassword = "img/sprite.svg#hide"
+        createApp({
+            data() {
+                return {
+                    passwordSwich: true,
+                    userName: '',
+                    userPassword: '',
+                    userStatus: null
+                }
+            },
+            methods: {
+                swichPassword() {
+                    this.passwordSwich = !this.passwordSwich
+                },
+                checkUser() {
+                    this.userStatus = users.some(u => u.name === this.userName && u.pass === this.userPassword)
+                }
+            },
+            computed: {
+                passwordIcon() {
+                    return this.passwordSwich ? showPassword : hidePassword
+                },
+                passwordType() {
+                    return this.passwordSwich ? "password" : "text"
+                },
+                ivan() {
+                    return (this.userName.toLowerCase() === "ivan" || this.userName.toLowerCase() === "іван")
+                        ? 'blue' : 'red'
+                }
+
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

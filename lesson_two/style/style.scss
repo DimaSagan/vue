@@ -1,0 +1,70 @@
+@use "_reset.scss";
+@use"_translater.scss";
+@use"_orders.scss";
+.wrapper-login {
+}
+.login {
+    border-radius: 15px;
+    background-color: rgb(226, 226, 226);
+    max-width: 400px;
+    padding: 35px 20px;
+    box-shadow: 6px 6px 5px rgba(0, 0, 0, 0.33);
+    h2{
+        text-align: center;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+    // .login__inputs
+
+    &__inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        input{
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            width: 100%;
+        }
+    }
+
+    // .login__submit
+
+    &__submit {
+        background-color: gray;
+        padding: 5px;
+        color: white;
+        &:hover{
+            background-color: rgb(97, 96, 96);
+        }
+    }
+
+    // .login__error
+
+    &__error {
+    }
+
+    &__password{
+        position: relative;
+        
+        input{
+            
+        }
+        button{
+            position: absolute;
+            top: 4px;
+            right: 5px;
+        }
+    }
+}
+
+.icon{
+    width: 20px;
+    height: 20px;
+}
+.blue{
+    color: blue;
+}
+.red{
+    color: red;
+}

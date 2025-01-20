@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задача 3</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <h2>Задача 3</h2>
+    <p>
+        Елемент тренажера англійської. Виводимо зображення елемента і слово. Користувач вводить відповідь. Якщо вірно – відтворюємо фразу «Добре.
+        Молодець!» (і додаємо зелену рамку до елемента), якщо ні - то відтворюємо фразу «Невірно, спробуйте ще раз» (і додаємо червону рамку).
+    </p>
+    <div id="app">
+        <article class="card" :class="borderColor">
+            <div class="card__img">
+                <img :src="wordImg" alt="">
+            </div>
+            <div class="card__information information">
+                <h3 class="information__title">
+                    {{wordTitle}}
+                </h3>
+                <span>Ваш переклад</span>
+                <input type="text" v-model.lazy="translate">
+            </div>
+            <div class="card__button"><button @click="checkTranslate">Перевірити</button></div>
+            <p style="height: 16px; text-align: center; margin-top: 5px;">{{userStatus}}</p>
+        </article>
+
+
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        const words = [
+            {
+                img: 'https://ik.imagekit.io/2xkwa8s1i/img/npl_modified_images/Apollo_new/WSTAPOLLOCWR1_2.jpg?tr=w-256',
+                word: 'table',
+                translate: 'стіл'
+            },
+            {
+                img: 'https://images.stockcake.com/public/5/2/a/52aabfd8-a2cf-4644-a18d-085dcc3c6252_medium/intense-cat-gaze-stockcake.jpg',
+                word: 'cat',
+                translate: 'кіт'
+            },
+            {
+                img: 'https://img.eobuwie.cloud/eob_product_256w_256h(9/e/2/2/9e22cfc84cca4077cb068b3cec5e47c138852617_20_8720109482379_ks.jpg,jpg)/zhinochii-remin-calvin-klein-ck-reversible-belt-3-0-epi-mono-k60k609981-black-epi-mono-dk-ecru-0gj-0000303408350.jpg',
+                word: 'belt',
+                translate: 'ремінь'
+            },
+        ]
+        createApp({
+            data() {
+                return {
+                    translate: '',
+                    curentWordIndex: 0,
+                    rihgtAnswear: false,
+                    falseAnswear: false,
+                }
+            },
+            methods: {
+                changeWord() {
+                    setTimeout(() => {
+                        this.curentWordIndex = (this.curentWordIndex + 1) % words.length
+                        this.translate = ''
+                        this.rihgtAnswear = false
+                    }, 3000)
+
+                },
+                checkTranslate() {
+                    if (this.translate.toLowerCase() === this.word.translate) {
+                        this.falseAnswear = false
+                        this.rihgtAnswear = true
+                        this.changeWord()
+                    }else{
+                        this.falseAnswear = true
+                    }
+                }
+            },
+            computed: {
+                word() {
+                    return words[this.curentWordIndex]
+                },
+                wordImg() {
+                    return this.word.img
+                },
+                wordTitle() {
+                    return this.word.word
+                },
+                borderColor() {
+                    let border = "default"
+                    if(this.rihgtAnswear === true){
+                        border = 'green-border'
+                    }else if(this.falseAnswear === true){
+                        border='red-border'
+                    }
+                    return border
+                },
+                userStatus(){
+                    return this.rihgtAnswear ? 'Добре' : this.falseAnswear ? 'Не вірно': ''
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
